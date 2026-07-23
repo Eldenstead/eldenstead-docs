@@ -1,0 +1,12 @@
+node_modules/
+build/
+.docusaurus/
+.env
+.env.*
+dist/
+community/build/
+community/.docusaurus/
+community/node_modules/
+operations/build/
+operations/.docusaurus/
+operations/node_modules/

@@ -1,0 +1,49 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            community/package-lock.json
+            operations/package-lock.json
+      - run: npm ci --prefix community
+      - run: npm ci --prefix operations
+      - run: npm run build
+      - run: |
+          mkdir -p dist/community dist/operations
+          cp -R community/build/. dist/community/
+          cp -R operations/build/. dist/operations/
+          cp -R root-static/. dist/
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/deploy-pages@v5
+        id: deployment

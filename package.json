@@ -1,0 +1,16 @@
+{
+  "name": "eldenstead-docs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Documentation workspace for Eldenstead community and operations sites.",
+  "scripts": {
+    "start:community": "npm --prefix community run start",
+    "start:operations": "npm --prefix operations run start",
+    "build": "npm run build:community && npm run build:operations",
+    "build:community": "npm --prefix community run build",
+    "build:operations": "npm --prefix operations run build",
+    "typecheck": "npm run typecheck:community && npm run typecheck:operations",
+    "typecheck:community": "npm --prefix community run typecheck",
+    "typecheck:operations": "npm --prefix operations run typecheck"
+  }
+}
